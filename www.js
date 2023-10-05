@@ -17,12 +17,25 @@ http.createServer(function(req, res){
 		res.write(pageBanner);
 		res.write(pageBody);
 		res.write('\n\t<hr>\n\t<p><a href="addname">Lisa oma nimi</a>!</p>');
+		res.write('\n\t<hr>\n\t<p>Lehe avamise hetkel oli kell <script type="text/javascript">/hoursNow.js</script></p>'); //<script src="hoursNow.js"></script>
+		res.write('\n\t<hr>\n\t<p><a href="semesterprogress">Semestri progress</a>!</p>')
 		res.write(pageFoot);
 		//console.log("Keegi vaatab!");
 		return res.end();
 	}
 	
 	else if (currentURL.pathname === "/addname"){
+		res.writeHead(200, {"Content-type": "text/html"});
+		res.write(pageHead);
+		res.write(pageBanner);
+		res.write(pageBody);
+		res.write('\n\t<hr>\n\t<h2>Lisa palun oma nimi</h2>');
+		res.write('\n\t<p>Edaspidi lisame siia asju!</p>');
+		res.write(pageFoot);
+		return res.end();
+	}
+
+	else if (currentURL.pathname === "/semesterprogress"){
 		res.writeHead(200, {"Content-type": "text/html"});
 		res.write(pageHead);
 		res.write(pageBanner);
