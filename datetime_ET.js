@@ -16,7 +16,7 @@ const dayETformatted = function(){
 
 const hoursNow = function(){
     let time = new Date();
-    return time.getHours() + ":" + time.getMinutes() + ":";// + time.getSeconds();
+    return time.getHours() + ":" + time.getMinutes()// + ":"; + time.getSeconds();
 }
 
 const timeOfDayET = function(){

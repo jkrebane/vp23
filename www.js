@@ -2,21 +2,21 @@ const http = require("http");
 const url = require("url");
 const path = require("path");
 const fs = require("fs");
-const datetime = require("./datetime_ET.js")
+const datetime = require("./datetime_ET.js");
 const tluphoto = '\n\t<img src="tlu_43.jpg" alt="Pilt Tallinna Ülikoolist">';
 const pageHead = '<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset="utf-8">\n\t<title>Jörgen Kristofer Rebane, veebiprogrammeerimine 2023</title>\n</head>\n<body>';
-const pageBanner = '\n\t<img src="banner.png" alt="Kursuse bänner">';
+const pageBanner = '\n\t<img src="veebjameedia_banner.png" alt="Kursuse bänner">';
 const pageBody = '\n\t<h1>Jörgen Kristofer Rebane</h1>\n\t<p>See veebileht on valminud <a href="https://www.tlu.ee" target="_blank">TLÜ</a> Digitehnoloogiate instituudi informaatia eriala õppetöö raames.</p>';
-const homePage = '\n\t<p><a href ="/"> Tagasi kodulehele</a></p>' //et oleks lihtsam kodulehele saada
+const homePage = '\n\t<p><a href ="/"> Tagasi kodulehele</a></p>'; //et oleks lihtsam kodulehele saada
 const pageFoot = '\n\t<hr>\n</body>\n</html>';
 
 //semestri arvutused ja värki
 const semesterStart = new Date("08/28/2023");
 const semesterEnd = new Date("01/28/2024");
 const semesterToday = new Date();
-const semesterTotal = Math.floor((semesterEnd.getTime() - semesterStart.getTime()) / 86.4e6)
-let semesterFromStart = Math.floor((semesterToday.getTime() - semesterStart.getTime()) / 86.4e6)
-let semesterToEnd = Math.floor((semesterEnd.getTime() - semesterToday.getTime()) / 86.4e6)
+const semesterTotal = Math.floor((semesterEnd.getTime() - semesterStart.getTime()) / 86.4e6);
+let semesterFromStart = Math.floor((semesterToday.getTime() - semesterStart.getTime()) / 86.4e6);
+let semesterToEnd = Math.floor((semesterEnd.getTime() - semesterToday.getTime()) / 86.4e6);
 
 
 http.createServer(function(req, res){
@@ -28,9 +28,9 @@ http.createServer(function(req, res){
 		res.write(pageBanner);
 		res.write(pageBody);
 		res.write('\n\t<hr>\n\t<p><a href="addname">Lisa oma nimi</a>!</p>');
-		res.write('\n\t<hr>\n\t<p>Lehe avamise hetkel oli kell:' + datetime.hoursNow() + ' Ja aeg oli: ' + datetime.timeOfDayET() + '</p>'); 
-		res.write('\n\t<hr>\n\t<p><a href="semesterprogress">Semestri progress</a>!</p>')
-		res.write('\n\t<hr>\n\t<p><a href="tlupicture">Üks pilt Tallinna Ülikoolist</a>!</p>');
+		res.write('\n\t<p>Lehe avamise hetkel oli kell:' + datetime.hoursNow() + ' Ja aeg oli: ' + datetime.timeOfDayET() + '</p>'); 
+		res.write('\n\t<p><a href="semesterprogress">Semestri progress</a></p>');
+		res.write('\n\t<p><a href="tlupicture">Üks pilt Tallinna Ülikoolist</a></p>');
 		res.write(pageFoot);
 		//console.log("Keegi vaatab!");
 		return res.end();
@@ -53,7 +53,7 @@ http.createServer(function(req, res){
         res.write(pageHead);
         res.write(pageBanner);
         res.write(pageBody);
-		res.write(homePage)
+		res.write(homePage);
         const dateFormat = {day: 'numeric', month: 'long', year: 'numeric'};     // yldine format (ainult numbritega)
         const startFormat = semesterStart.toLocaleDateString('et-EE', dateFormat);  // Eesti kuupaeva format
         const endFormat = semesterEnd.toLocaleDateString('et-EE', dateFormat);
@@ -72,7 +72,7 @@ http.createServer(function(req, res){
 
         }   // semester on labi
         else if (semesterEnd < semesterToday){
-            res.write('<p>Semester on kahjuks läbi!!!</p>');
+            res.write('<p>Semester on läbi!!</p>');
         }
         res.write(pageFoot);
         return res.end();
@@ -85,7 +85,7 @@ http.createServer(function(req, res){
 		res.write(pageBanner);
 		res.write(pageBody);
 		res.write(homePage);
-		res.write(tluphoto)
+		res.write(tluphoto);
 		res.write(pageFoot);
 		return res.end();
 	}
@@ -106,7 +106,7 @@ http.createServer(function(req, res){
 		});
 	}
 	
-	else if (currentURL.pathname === "/banner.png"){
+	else if (currentURL.pathname === "/veebjameedia_banner.png"){
 		console.log("Tahame pilti!");
 		let bannerPath = path.join(__dirname, "public", "banner");
 		//console.log(bannerPath + currentURL.pathname);
