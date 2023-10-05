@@ -4,7 +4,7 @@ const url = require("url");
 const path = require("path");
 const fs = require("fs");
 const querystring = require('querystring')
-const datetime = require("./datetime_ET.js");
+const datetime = require("./datetime_ET");
 const semesTer = require('./semesterprog');
 
 //LEHE BANNER JMS
@@ -18,8 +18,10 @@ const pageFoot = '\n\t<hr>\n</body>\n</html>';
 http.createServer(function(req, res){
 	let currentURL = url.parse(req.url, true);
 	//console.log(currentURL);
-	if(req.method === 'post'){
-        collectRequestData(req, answer => {
+	if(req.method === 'POST'){
+
+        collectRequestData(req, result => {
+			console.log(result);
             // kirjutame andmeid tekstifaili
             fs.open('public/log.txt', 'a', (err, file) => {       // 'a' kui faili pole siis see luuakse
                 if (err){
@@ -35,13 +37,14 @@ http.createServer(function(req, res){
                         }
                     });
 				}
-                    //fs.close(file, (err) => {
-                    //    if (err) {
-                    //        throw err;
-                    //    }
-                    //});
+                //fs.close(file, (err) => {
+                //    if (err) {
+                //        throw err;
+                //    }
+                //});
             });
-            res.end(answer.firstNameInput);
+
+            res.end(result.firstNameInput);
 		});
 	}
 
@@ -50,10 +53,10 @@ http.createServer(function(req, res){
 		res.write(pageHead);
 		res.write(pageBanner);
 		res.write(pageBody);
-		res.write('\n\t<hr>\n\t<p><a href="addname">Lisa oma nimi</a>!</p>');
-		res.write('\n\t<p>Lehe avamise hetkel oli kell:' + datetime.hoursNow() + ' Ja aeg oli: ' + datetime.timeOfDayET() + '</p>'); 
-		res.write('\n\t<p><a href="semesterprogress">Semestri progress</a></p>');
-		res.write('\n\t<p><a href="tlupicture">Üks pilt Tallinna Ülikoolist</a></p>');
+		res.write('\n\t<hr>\n\t<p><a href="addname">Lisa oma nimi!</a></p>');
+		res.write('\n\t<p>Lehe avamise hetkel oli kell: ' + datetime.hoursNow() + ' Ja aeg oli: ' + datetime.timeOfDayET() + '</p>'); 
+		res.write('\n\t<p><a href="semesterprogress">Semestri kulgemise ülevaade</a></p>');
+		res.write('\n\t<p><a href="tlupicture">Üks suvaline pilt Tallinna Ülikoolist</a></p>');
 		res.write(pageFoot);
 		return res.end();
 	}
@@ -75,6 +78,7 @@ http.createServer(function(req, res){
         res.write(pageHead);
         res.write(pageBanner);
         res.write(pageBody);
+		res.write(homePage);
         res.write('<p>' + semesTer.output + '</p>');
         res.write(pageFoot);
         return res.end();

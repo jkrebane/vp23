@@ -8,7 +8,6 @@ const dateETformatted = function(){
 
 const dayETformatted = function(){
     const daysET = ["Pühapäev", "Esmaspäev", "Teisipäev", "Kolmapäev", "Neljapäev", "Reede", "Laupäev"];
-
     let dateNow = new Date();
     //let dayNow = daysET[dateNow.getDay()];
     return daysET[dateNow.getDay()];
@@ -16,16 +15,23 @@ const dayETformatted = function(){
 
 const hoursNow = function(){
     let time = new Date();
-    return time.getHours() + ":" + time.getMinutes()// + ":"; + time.getSeconds();
+    const hours = String(time.getHours()).padStart(2, '0');
+	const minutes = String(time.getMinutes()).padStart(2, '0');
+	const seconds = String(time.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+    //return time.getHours() + ":" + time.getMinutes()// + ":"; + time.getSeconds();
 }
 
 const timeOfDayET = function(){
     let partOfDay = "suvaline hetk";
     let hourNow = new Date().getHours();
-    if(hourNow >= 6 && hourNow < 12){
+    if(hourNow >= 6 && hourNow < 10){
         partOfDay = "Hommik";
     }
-    if(hourNow >14 && hourNow < 18){
+    if(hourNow >= 10 && hourNow < 14){
+		partOfDay = "lõuna";
+	}
+    if(hourNow >= 14 && hourNow < 18){
         partOfDay = "Pärastlõuna"
     }
     if (hourNow >= 18){
@@ -35,4 +41,4 @@ const timeOfDayET = function(){
 }
 
 //ekspordin
-module.exports = {dateETformatted: dateETformatted, hoursNow: hoursNow, monthsET: monthNamesET, dayETformatted: dayETformatted, timeOfDayET: timeOfDayET}
+module.exports = {dateETformatted: dateETformatted, hoursNow: hoursNow, dayETformatted: dayETformatted, timeOfDayET: timeOfDayET}
