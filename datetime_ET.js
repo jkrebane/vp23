@@ -16,23 +16,23 @@ const dayETformatted = function(){
 
 const hoursNow = function(){
     let time = new Date();
-    return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
+    return time.getHours() + ":" + time.getMinutes() + ":";// + time.getSeconds();
 }
 
 const timeOfDayET = function(){
     let partOfDay = "suvaline hetk";
     let hourNow = new Date().getHours();
     if(hourNow >= 6 && hourNow < 12){
-        partOfDay = "hommik";
+        partOfDay = "Hommik";
     }
     if(hourNow >14 && hourNow < 18){
-        partOfDay = "pärastlõuna"
+        partOfDay = "Pärastlõuna"
     }
     if (hourNow >= 18){
-        partOfDay = "õhtu";
+        partOfDay = "Õhtu";
     }
     return partOfDay;
 }
 
-//ekspordin mõlemad asjad
+//ekspordin
 module.exports = {dateETformatted: dateETformatted, hoursNow: hoursNow, monthsET: monthNamesET, dayETformatted: dayETformatted, timeOfDayET: timeOfDayET}
