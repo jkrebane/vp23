@@ -3,6 +3,7 @@ const http = require("http");
 const url = require("url");
 const path = require("path");
 const fs = require("fs");
+const querystring = require('querystring')
 const datetime = require("./datetime_ET.js");
 const semesTer = require('./semesterprog');
 
@@ -16,7 +17,35 @@ const pageFoot = '\n\t<hr>\n</body>\n</html>';
 //HOMEPAGE
 http.createServer(function(req, res){
 	let currentURL = url.parse(req.url, true);
-	if (currentURL.pathname === "/"){
+	//console.log(currentURL);
+	if(req.method === 'post'){
+        collectRequestData(req, answer => {
+            // kirjutame andmeid tekstifaili
+            fs.open('public/log.txt', 'a', (err, file) => {       // 'a' kui faili pole siis see luuakse
+                if (err){
+                    throw err;
+                }
+                else {
+                    fs.appendFile('public/log.txt', result.firstNameInput + ';', (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                        else {
+                            console.log('faili kirjutati');
+                        }
+                    });
+				}
+                    //fs.close(file, (err) => {
+                    //    if (err) {
+                    //        throw err;
+                    //    }
+                    //});
+            });
+            res.end(answer.firstNameInput);
+		});
+	}
+
+	else if (currentURL.pathname === "/"){
 		res.writeHead(200, {"Content-type": "text/html"});
 		res.write(pageHead);
 		res.write(pageBanner);
@@ -36,7 +65,7 @@ http.createServer(function(req, res){
 		res.write(pageBody);
 		res.write(homePage);
 		res.write('\n\t<hr>\n\t<h2>Lisa palun oma nimi</h2>');
-		res.write('\n\t<p>Edaspidi lisame siia asju!</p>');
+		res.write('\n\t<form method="POST">\n\t<label for="firstNameInput">Eesnimi: </label>\n\t<input type="text" name= "firstNameInput" id="firstNameInput" placeholder="Sinu eesnimi ...">\n\t<br>\n\t<label for="lastNameInput">Perekonnanimi: </label>\n\t<input type="text" name= "lastNameInput" id="lastNameInput" placeholder="Sinu perekonnanimi ...">\n\t<br>\n\t<input type="submit" name="nameSubmit" value="Salvesta">\n\t</form>');
 		res.write(pageFoot);
 		return res.end();
 	}
@@ -128,4 +157,20 @@ function tluPhotoPage(res, htmlOut, listOutput){
 	return res.end();
 }
 
+//FORM FUNCTION
+function collectRequestData(request, callback) {
+    const FORM_URLENCODED = 'application/x-www-form-urlencoded';
+    if(request.headers['content-type'] === FORM_URLENCODED) {
+        let receivedData = '';
+        request.on('data', chunk => {
+            receivedData += chunk.toString();
+        });
+        request.on('end', () => {
+            callback(querystring.decode(receivedData));
+        });
+    }
+    else {
+        callback(null);
+    }
+}
 //PORT - RINDE 5100, MINA 5125
